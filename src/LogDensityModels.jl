@@ -10,23 +10,6 @@ import LogDensityProblems as LD
 using ModelFlatten
 using ModelFlatten: Fixed
 
-function logpdf_dists(dists::NamedTuple,θ::NamedTuple{names,T}) where {names,T}
-  W = promote_type((
-    if t <: AbstractArray 
-      t.parameters[1]
-    else 
-      t
-    end for t in T.parameters)...)
-
-  sum(pairs(dists)) do (k,d)
-    if insupport(d,θ[k])
-      logpdf(d,θ[k]) 
-    else
-      typemin(W)
-    end
-  end::W
-end
-
 include("flattened.jl")
 include("transformed.jl")
 include("conditioned/flattened.jl")
