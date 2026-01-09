@@ -4,8 +4,6 @@ export flatten, Descriptor
 export FlattenedModel,TransformedModel,ConditionedModel,
 TransformedConditionedModel, DistributionModel, CombinedModel
 
-using Reexport
-@reexport using LogDensityProblems
 import LogDensityProblems as LD
 using ModelFlatten
 using ModelFlatten: Fixed

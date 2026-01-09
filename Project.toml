@@ -6,9 +6,7 @@ authors = ["Afonsso Lamelas <alamelas@ua.pt>"]
 [deps]
 LogDensityProblems = "6fdf6af0-433a-55f7-b3ed-c6c6e0b8df7c"
 ModelFlatten = "99da26a0-9061-4147-960d-65978c0fa4a2"
-Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 
 [compat]
 LogDensityProblems = "2.2.0"
 ModelFlatten = "0.2.0"
-Reexport = "1.2.2"
