@@ -13,8 +13,9 @@ include("transformed.jl")
 include("conditioned/flattened.jl")
 include("conditioned/transformed.jl")
 
-get_priors(m)
-unwrap(m)
+# TODO: rename or remove the need for get_priors as it does not make sense for all models
+function get_priors(m) end
+function unwrap(m) end
 
 struct DistributionModel{D}
   dist::D
