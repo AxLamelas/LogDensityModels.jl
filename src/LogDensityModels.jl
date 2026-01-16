@@ -30,8 +30,9 @@ function LD.logdensity(m::DistributionModel,x)
   return logpdf(m.dist,x)::T
 end
 LD.dimension(m::DistributionModel) = length(m.dist)
-LD.capabilities(m::Type{<:DistributionModel}) = LD.LogDensityOrder{0}()
+LD.capabilities(::Type{<:DistributionModel}) = LD.LogDensityOrder{0}()
 
+get_priors(m::DistributionModel) = m.dist
 unwrap(m::DistributionModel) = m
 
 struct CombinedModel{M <: Tuple, S<:Tuple}
