@@ -21,7 +21,11 @@ function LD.logdensity(m::TransformedModel,x)
   return ℓ + LD.logdensity(m.model,θ)
 end
 
-LD.dimension(m::TransformedModel) = m.transform.length_out
+LD.dimension(m::TransformedModel) = if hasproperty(m.transform,:length_out)
+  m.transform.length_out
+else
+  LD.dimension(m.model)
+end
 LD.capabilities(m::Type{<:TransformedModel}) = LD.LogDensityOrder{0}()
 
 get_priors(m::TransformedModel) = get_priors(m.model)
