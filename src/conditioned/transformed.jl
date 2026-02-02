@@ -1,4 +1,4 @@
-struct TransformedConditionedModel{M,D,B,I}
+struct TransformedConditionedModel{M,D,B,I} <: AbstractLogDensityModel
   model::M
   unflatten::D
   transform::B
@@ -24,4 +24,4 @@ LD.dimension(m::TransformedConditionedModel) = m.transform.length_out
 LD.capabilities(::TransformedConditionedModel) = LD.LogDensityOrder{0}()
 
 get_priors(m::TransformedConditionedModel) = get_priors(m.model)
-unwrap(m::TransformedConditionedModel) = unwrap(m.model)
+unwrap(m::TransformedConditionedModel) = m.model

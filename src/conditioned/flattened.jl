@@ -1,4 +1,4 @@
-struct ConditionedModel{M,D}
+struct ConditionedModel{M,D} <: AbstractLogDensityModel
   model::M
   unflatten::D
 end
@@ -20,5 +20,5 @@ LD.dimension(m::ConditionedModel) = length(m.unflatten)
 LD.capabilities(m::ConditionedModel) = LD.LogDensityOrder{0}()
 
 get_priors(m::ConditionedModel) = get_priors(m.model)
-unwrap(m::ConditionedModel) = unwrap(m.model)
+unwrap(m::ConditionedModel) = m.model
 

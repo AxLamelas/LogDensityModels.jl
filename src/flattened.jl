@@ -1,4 +1,4 @@
-struct FlattenedModel{M,D}
+struct FlattenedModel{M,D} <: AbstractLogDensityModel
   model::M
   unflatten::D
 end
@@ -19,4 +19,4 @@ LD.dimension(m::FlattenedModel) = LD.dimension(m.model)
 LD.capabilities(m::Type{<:FlattenedModel}) = LD.LogDensityOrder{0}()
 
 get_priors(m::FlattenedModel) = get_priors(m.model)
-unwrap(m::FlattenedModel) = unwrap(m.model)
+unwrap(m::FlattenedModel) = m.model

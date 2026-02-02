@@ -1,12 +1,9 @@
 name = "LogDensityModels"
 uuid = "b596860d-3042-4429-83b7-bd17b42f6e59"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Afonsso Lamelas <alamelas@ua.pt>"]
 
 [deps]
 LogDensityProblems = "6fdf6af0-433a-55f7-b3ed-c6c6e0b8df7c"
 ModelFlatten = "99da26a0-9061-4147-960d-65978c0fa4a2"
-
-[compat]
-LogDensityProblems = "2.2.0"
-ModelFlatten = "0.2.0"
+TaskLocalValues = "ed4db957-447d-4319-bfb6-7fa9ae7ecf34"
