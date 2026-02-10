@@ -3,8 +3,8 @@ struct CombinedModel{M <: Tuple, S<:Tuple} <: AbstractLogDensityModel
   factors::S
 end
 
-function LD.logdensity(c::CombinedModel,x)
-  sum(f*LD.logdensity(m,x) for (m,f) in zip(c.models,c.factors))
+LD.logdensity(c::CombinedModel,x) = sum(zip(c.models,c.factors)) do (m,f)
+  f*LD.logdensity(m,x)
 end
 
 LD.dimension(m::CombinedModel) = LD.dimension(first(m.models))

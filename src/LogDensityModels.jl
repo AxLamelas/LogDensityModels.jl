@@ -28,8 +28,8 @@ else
   throw(error("Model does not have an inverse transform!"))
 end
 
-get_priors(m::AbstractLogDensityModel,x) = if iswrapped(m)
-  get_priors(unwrap(m),x)
+get_priors(m::AbstractLogDensityModel) = if iswrapped(m)
+  get_priors(unwrap(m))
 else
   throw(error("Model does not have associated priors"))
 end
