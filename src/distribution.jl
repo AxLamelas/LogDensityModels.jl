@@ -23,5 +23,5 @@ end
 LD.dimension(m::DistributionModel) = length(m.dist)
 LD.capabilities(::Type{<:DistributionModel}) = LD.LogDensityOrder{0}()
 
-get_priors(m::DistributionModel) = m.dist
+get_param_distribution(m::DistributionModel) = m.dist
 unwrap(m::DistributionModel) = m

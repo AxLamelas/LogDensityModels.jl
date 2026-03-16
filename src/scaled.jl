@@ -25,6 +25,9 @@ function LD.logdensity(m::ScaledModel,x)
 end
 
 LD.dimension(m::ScaledModel) = LD.dimension(m.model)
-LD.capabilities(m::Type{<:ScaledModel}) = LD.LogDensityOrder{0}()
+LD.capabilities(::Type{<:ScaledModel}) = LD.LogDensityOrder{0}()
 
 unwrap(m::ScaledModel) = m.model
+
+local_transform(m::ScaledModel,x) = m.scales .* x
+local_inverse(m::ScaledModel,x) = x ./ m.scales

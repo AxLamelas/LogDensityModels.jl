@@ -1,8 +1,8 @@
 module LogDensityModels
 
 export flatten, Descriptor
-export FlattenedModel,TransformedModel,ConditionedModel,
-TransformedConditionedModel, DistributionModel, CombinedModel, TaskLocalModel
+export FlattenedModel,TransformedModel,ConditionedModel, ScaledModel,
+DistributionModel, CombinedModel, TaskLocalModel
 
 import LogDensityProblems as LD
 using ModelFlatten
@@ -12,29 +12,34 @@ using TaskLocalValues
 
 abstract type AbstractLogDensityModel end
 
-function unwrap(::AbstractLogDensityModel) end
-
+# By default the model is not wrapped
+unwrap(m::AbstractLogDensityModel) = m
 iswrapped(m::AbstractLogDensityModel) = m !== unwrap(m)
 
+# Default transformations -> identity
+local_transform(::AbstractLogDensityModel,x) = x
+local_inverse(::AbstractLogDensityModel,x) = x
 transform(m::AbstractLogDensityModel,x) = if iswrapped(m)
-  transform(unwrap(m),x)
+	local_transform(m,transform(unwrap(m),x))
 else
-  throw(error("Model does not have a transform!"))
+	local_transform(m,x)
 end
 
 inverse(m::AbstractLogDensityModel,x) = if iswrapped(m)
-  inverse(unwrap(m),x)
+	inverse(unwrap(m),local_inverse(m,x))
 else
-  throw(error("Model does not have an inverse transform!"))
+	local_inverse(m,x)
 end
 
-get_priors(m::AbstractLogDensityModel) = if iswrapped(m)
-  get_priors(unwrap(m))
-else
-  throw(error("Model does not have associated priors"))
-end
+transform(m,x) = x
+inverse(m,x) = x
 
-function unwrap(m) end
+
+get_param_distribution(m::AbstractLogDensityModel) = if iswrapped(m)
+  get_param_distribution(unwrap(m))
+else
+  throw(error("Model does not have an associated parameter distribution."))
+end
 
 Base.show(io::IO,m::AbstractLogDensityModel) = if iswrapped(m)
   print(io,string(Base.nameof(typeof(m)))*"(")
@@ -46,8 +51,7 @@ end
 
 include("flattened.jl")
 include("transformed.jl")
-include("conditioned/flattened.jl")
-include("conditioned/transformed.jl")
+include("conditioned.jl")
 include("tasklocal.jl")
 include("distribution.jl")
 include("scaled.jl")

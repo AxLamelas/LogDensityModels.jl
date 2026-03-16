@@ -1,24 +1,21 @@
-struct TransformedModel{M,D,B,I} <: AbstractLogDensityModel
+struct TransformedModel{M,B,I} <: AbstractLogDensityModel
   model::M
-  unflatten::D
   transform::B
   inverse::I
 end
 
 function TransformedModel(model)
-  priors = get_priors(model)
-  unflatten = Descriptor(priors)
+  priors = get_param_distribution(model)
   transform,inverse = setup_transforms(priors)
 
-  return TransformedModel(model,unflatten,transform,inverse)
+  return TransformedModel(model,transform,inverse)
 end
 
-(m::TransformedModel)(x) = m.model(m.unflatten(m.inverse(x)))
+(m::TransformedModel)(x) = m.model(m.inverse(x))
 
 function LD.logdensity(m::TransformedModel,x::AbstractVector)
   y,ℓ = with_logabsdet_jacobian(m.inverse,x)
-  θ = m.unflatten(y)
-  return ℓ + LD.logdensity(m.model,θ)
+  return ℓ + LD.logdensity(m.model,y)
 end
 
 LD.dimension(m::TransformedModel) = if hasproperty(m.transform,:length_out)
@@ -26,12 +23,12 @@ LD.dimension(m::TransformedModel) = if hasproperty(m.transform,:length_out)
 else
   LD.dimension(m.model)
 end
-LD.capabilities(m::Type{<:TransformedModel}) = LD.LogDensityOrder{0}()
+LD.capabilities(::Type{<:TransformedModel}) = LD.LogDensityOrder{0}()
 
-get_priors(m::TransformedModel) = get_priors(m.model)
+get_param_distribution(m::TransformedModel) = Bijectors.TransformedDistribution(
+	get_param_distribution(unwrap(m)),m.transform)
 unwrap(m::TransformedModel) = m.model
 
-transform(m::TransformedModel,x::AbstractVector) = m.transform(x)
-transform(m::TransformedModel,θ) = m.transform(flatten(m.unflatten,θ))
-inverse(m::TransformedModel,x::AbstractVector) = m.inverse(x)
+local_transform(m::TransformedModel,x) = m.transform(x)
+local_inverse(m::TransformedModel,x) = m.inverse(x)
 

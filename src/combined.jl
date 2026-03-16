@@ -8,6 +8,6 @@ LD.logdensity(c::CombinedModel,x) = mapreduce(+,c.models,c.factors) do m,f
 end
 
 LD.dimension(m::CombinedModel) = LD.dimension(first(m.models))
-LD.capabilities(m::Type{<:CombinedModel}) = LD.LogDensityOrder{0}()
+LD.capabilities(::Type{<:CombinedModel}) = LD.LogDensityOrder{0}()
 
 unwrap(m::CombinedModel) = first(m.models)

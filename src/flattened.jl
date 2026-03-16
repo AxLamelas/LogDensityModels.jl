@@ -4,7 +4,7 @@ struct FlattenedModel{M,D} <: AbstractLogDensityModel
 end
 
 function FlattenedModel(model)
-  priors = get_priors(model)
+  priors = get_param_distribution(model)
   unflatten = Descriptor(priors)
 
   return FlattenedModel(model,unflatten)
@@ -16,7 +16,11 @@ function LD.logdensity(m::FlattenedModel,x)
 end
 
 LD.dimension(m::FlattenedModel) = LD.dimension(m.model)
-LD.capabilities(m::Type{<:FlattenedModel}) = LD.LogDensityOrder{0}()
+LD.capabilities(::Type{<:FlattenedModel}) = LD.LogDensityOrder{0}()
 
-get_priors(m::FlattenedModel) = get_priors(m.model)
+get_param_distribution(m::FlattenedModel) = product_distribution(flatten(get_param_distribution(m.model)))
 unwrap(m::FlattenedModel) = m.model
+
+local_transform(m::FlattenedModel,θ) = flatten(m.unflatten,θ)
+local_inverse(m::FlattenedModel,x) = m.unflatten(x)
+
