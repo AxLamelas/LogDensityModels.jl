@@ -15,7 +15,7 @@ function LD.logdensity(m::FlattenedModel,x)
   return LD.logdensity(m.model,θ)
 end
 
-LD.dimension(m::FlattenedModel) = LD.dimension(m.model)
+LD.dimension(m::FlattenedModel) = length(m.unflatten)
 LD.capabilities(::Type{<:FlattenedModel}) = LD.LogDensityOrder{0}()
 
 get_param_distribution(m::FlattenedModel) = product_distribution(flatten(get_param_distribution(m.model)))
