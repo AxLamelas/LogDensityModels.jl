@@ -6,4 +6,8 @@ authors = ["Afonsso Lamelas <alamelas@ua.pt>"]
 [deps]
 LogDensityProblems = "6fdf6af0-433a-55f7-b3ed-c6c6e0b8df7c"
 ModelFlatten = "99da26a0-9061-4147-960d-65978c0fa4a2"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 TaskLocalValues = "ed4db957-447d-4319-bfb6-7fa9ae7ecf34"
+
+[compat]
+Random = "1.11.0"

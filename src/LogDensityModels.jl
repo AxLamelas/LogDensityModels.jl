@@ -8,6 +8,7 @@ import LogDensityProblems as LD
 using ModelFlatten
 using ModelFlatten: Fixed
 using TaskLocalValues
+using Random
 
 
 abstract type AbstractLogDensityModel end
