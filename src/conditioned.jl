@@ -9,8 +9,7 @@ end
 # TODO: see if the same code can be generalized/adapted to allow conditioning on vector indices as well
 
 function ConditionedModel(model; kwargs...)
-	umodel = unwrap(model)
-	base_dist = get_param_distribution(umodel)
+	base_dist = get_param_distribution(model)
 	for k in keys(kwargs)
 		if !(k in keys(base_dist))
 			@warn "Conditioning on $(k) but it is not a parameter of the model"
@@ -22,7 +21,7 @@ function ConditionedModel(model; kwargs...)
 end
 
 function LD.logdensity(m::ConditionedModel,θ)
-	return LD.logdensity(m.model,(; θ..., m.cond))
+	return LD.logdensity(m.model,(; θ..., m.cond...))
 end
 
 LD.dimension(m::ConditionedModel) = m.dim
