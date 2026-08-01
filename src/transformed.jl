@@ -15,7 +15,7 @@ end
 
 function LD.logdensity(m::TransformedModel,x::AbstractVector)
   y,ℓ = with_logabsdet_jacobian(m.inverse,x)
-  return ℓ + LD.logdensity(m.model,y)
+	return LD.logdensity(m.model,y) + ℓ
 end
 
 LD.dimension(m::TransformedModel) = if hasproperty(m.transform,:length_out)
