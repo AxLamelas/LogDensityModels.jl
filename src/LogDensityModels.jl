@@ -2,11 +2,11 @@ module LogDensityModels
 
 export flatten, Descriptor
 export FlattenedModel,TransformedModel,ConditionedModel, ScaledModel,
-DistributionModel, CombinedModel, TaskLocalModel
+DistributionModel, CombinedModel, TaskLocalModel, MutableThreadSafeModel
 
 import LogDensityProblems as LD
 using ModelFlatten
-using ModelFlatten: Fixed
+using ModelFlatten: Fixed, flat_eltype
 using TaskLocalValues
 using Random
 
@@ -57,6 +57,7 @@ include("tasklocal.jl")
 include("distribution.jl")
 include("scaled.jl")
 include("combined.jl")
+include("mutable_threaded.jl")
 
 
 end # module LogDensityModels
